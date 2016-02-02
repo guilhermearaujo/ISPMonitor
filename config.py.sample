@@ -1,0 +1,6 @@
+consumer_key    = 'abcdefghijklmnopqrstuvwxy'
+consumer_secret = 'aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890AbCdEfGhIjKlMn'
+access_key      = '1234567890-aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLm'
+access_secret   = 'aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890AbCdEfGhI'
+down_speed      = 100.0
+up_speed        = 20.0
