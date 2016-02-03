@@ -1,6 +1,38 @@
-consumer_key    = 'abcdefghijklmnopqrstuvwxy'
-consumer_secret = 'aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890AbCdEfGhIjKlMn'
-access_key      = '1234567890-aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLm'
-access_secret   = 'aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890AbCdEfGhI'
-down_speed      = 100.0
-up_speed        = 20.0
+# coding=utf-8
+
+# twitter config
+twitter_consumer_key    = 'abcdefghijklmnopqrstuvwxy'
+twitter_consumer_secret = 'aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890AbCdEfGhIjKlMn'
+twitter_access_key      = '1234567890-aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLm'
+twitter_access_secret   = 'aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890AbCdEfGhI'
+
+twitter_message = 'A @NEToficial está funcionando a %.2f Mbps (%.2f%%) de download e %.2f Mbps (%.2f%%) de upload. A latência é de %.2f ms\n%s'
+
+# ----
+# fill with your connection data
+
+down_speed = 100.0
+up_speed   = 20.0
+
+
+messages = dict(
+  excellent = ['Mandou bem!'],
+  very_good = ['Tá ótimo =)'],
+  good      = ['Tá justo'],
+  common    = ['Vamos melhorar isso, pessoal?'],
+  not_good  = ['Estou pagando por mais, viu?'],
+  bad       = ['Tá de brincadeira?'],
+  shit      = ['Pode isso, @Anatel_Informa?']
+)
+
+# format
+# name = (down, up)
+speeds = dict(
+  excellent = [105, 110],
+  very_good = [95, 95],
+  good      = [90,90],
+  common    = [85, 85],
+  not_good  = [70, 70],
+  bad       = [60, 60],
+  shit      = (10, 10)
+)
