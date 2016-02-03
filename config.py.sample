@@ -34,5 +34,5 @@ speeds = dict(
   common    = [85, 85],
   not_good  = [70, 70],
   bad       = [60, 60],
-  shit      = (10, 10)
+  shit      = [10, 10]
 )
