@@ -10,10 +10,11 @@ ISP Monitor monitors your Internet speeds and reports the results to your Twitte
 
 # Installing
 1. Clone this repo: `$ git clone git@github.com:guilhermearaujo/ISPMonitor.git`
-2. Add your Twitter Credentials and Internet speeds to `config.py` (hint: there's a `config.py.sample`!)
-3. Schedule the script using `cron`:  
-  `$ crontab -e`  
-  Add the line:  
+2. Install dependencies with `pip install -r requirements.txt`
+3. Add your Twitter Credentials and Internet speeds to `config.py` (hint: there's a `config.py.sample`!)
+4. Schedule the script using `cron`:
+  `$ crontab -e`
+  Add the line:
   `0 */1 * * * python /path/to/script/net.py`
 
 # Using
