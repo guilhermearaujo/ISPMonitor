@@ -1,24 +1,45 @@
 #encoding: UTF-8
+import os
+
+# twitter config
+twitter_consumer_key    = ''
+twitter_consumer_secret = ''
+twitter_access_key      = ''
+twitter_access_secret   = ''
+
+twitter_message = 'A @NEToficial está funcionando a %.2f Mbps (%.2f%%) de download e %.2f Mbps (%.2f%%) de upload. A latência é de %.2f ms\n%s'
+
+# ----
+# fill with your connection data
 
 # Internet Speeds
-down_speed      = 100.0
-up_speed        = 20.0
+# hint: use speedtest-cli --simple > net.log to generate a log file with your current connection info
+down_speed = os.getenv('ISP_DOWN_SPEED', 30.0)
+up_speed = os.getenv('ISP_UP_SPEED', 3)
 
-# Twitter
-consumer_key    = 'abcdefghijklmnopqrstuvwxy'
-consumer_secret = 'aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890AbCdEfGhIjKlMn'
-access_key      = '1234567890-aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLm'
-access_secret   = 'aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890AbCdEfGhI'
-
-# Tweet
-twitter_message = 'A @NEToficial está funcionando a %.2f Mbps (%.2f%%) de download e %.2f Mbps (%.2f%%) de upload. A latência é de %.2f ms. %s'
-
-messages = dict (
-  awesome   = 'Mandou bem!',
-  great     = 'Tá ótimo :)',
-  fair      = 'Tá justo',
-  mediocre  = 'Vamos melhorar isso, pessoal?',
-  bad       = 'Estou pagando por mais, viu?',
-  terrible  = 'Tá de brincadeira?',
-  shit      = 'Pode isso, @Anatel_Informa?'
+# format
+# name = [messages]
+messages = dict(
+  awesome   = ['INACREDITÁVEL', 'BUGOU A MATRIX'],
+  excellent = ['Mandou bem!', 'Aii meu corassaum'],
+  very_good = ['Tá ótimo =)', 'Tá ótimo tá favorável!'],
+  good      = ['Tá justo', 'Não me impressiona'],
+  common    = ['Vamos melhorar isso, pessoal?'],
+  not_good  = ['Estou pagando por mais, viu?', 'Na merda de sempre'],
+  bad       = ['Tá de brincadeira?', 'Podia ser pior :('],
+  shit      = ['Pode isso, @Anatel_Informa?', '@Anatel_Informa, comofaz?']
 )
+
+# format
+# name = (down %, up %)
+speeds = dict(
+  awesome   = [150, 150],
+  excellent = [105, 105],
+  very_good = [95, 95],
+  good      = [90,90],
+  common    = [85, 85],
+  not_good  = [70, 70],
+  bad       = [60, 60],
+  shit      = [10, 10]
+)
+

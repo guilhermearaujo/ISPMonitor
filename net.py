@@ -4,17 +4,33 @@ import os
 import re
 import tweepy
 import config
+from random import randint
+from IPython import embed # call embed() anywhere to debug code
+
 
 def main():
   try:
     run_test()
     results = parse_results()
+    post_results_in_twitter(results)
+  except Exception as e:
+    print "Unexpected error: %s" % str(e)
+    raise
+
+def post_results_in_twitter(results):
+  status_message = mount_status(results)
+
+  try:
     twitter = authenticate()
-    twitter.update_status(mount_status(results))
+    twitter.update_status(status_message)
   except:
-    return
+    print 'Error posting message in Twitter timeline (see config.py)'
+  finally:
+    print "Message: %s" % (status_message)
 
 def run_test():
+  print 'speed config: download = %s | upload = %s' % (config.down_speed, config.up_speed)
+  print 'collecting data using speedtest-cli utility(this can take a while depending on your connection speed)\n'
   os.system('speedtest-cli --simple > net.log')
 
 def parse_results():
@@ -27,36 +43,64 @@ def parse_results():
   return [
     ping,
     down_speed,
-    down_speed * 100 / config.down_speed,
+    (down_speed * 100 / float(config.down_speed)),
     up_speed,
-    up_speed * 100 / config.up_speed
+    (up_speed * 100 / float(config.up_speed))
   ]
 
 def get_value(line):
   return float(re.search('(\d+\.\d+)', line).group(0))
 
 def authenticate():
-  auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
-  auth.set_access_token(config.access_key, config.access_secret)
+  auth = tweepy.OAuthHandler(config.twitter_consumer_key, config.twitter_consumer_secret)
+  auth.set_access_token(config.twitter_access_key, config.twitter_access_secret)
   return tweepy.API(auth)
 
 def mount_status(results):
   return config.twitter_message % (
-    results[1], # Download speed
-    results[2], # Download percentage
-    results[3], # Upload speed
-    results[4], # Upload percentage
-    results[0], # Ping
-    final_message(results[2], results[4])
+    results[1], # download speed
+    results[2], # download (%)
+    results[3], # upload speed
+    results[4], # upload (%s)
+    results[0], # ping
+    final_message(results[2], results[4]) # random final message
   )
 
-def final_message(down, up):
-  if down > 105 or up > 110: return config.messages['awesome']
-  elif down > 95 and up > 95: return config.messages['great']
-  elif down > 90 and up > 90: return config.messages['fair']
-  elif down > 85 and up > 85: return config.messages['mediocre']
-  elif down > 70 and up > 70: return config.messages['bad']
-  elif down > 60 and up > 60: return config.messages['terrible']
-  else: return config.messages['shit']
+def satisfy(current_down, current_up, connection_status):
+  check_valid_connection_status(connection_status)
+
+  speeds = config.speeds[connection_status]
+  up_speed, down_speed = speeds
+
+  return (current_down > down_speed and current_up > up_speed)
+
+def get_message(connection_status):
+  check_valid_connection_status(connection_status)
+
+  messages = config.messages[connection_status]
+  message = messages[randint(0, (len(messages) -1))]
+
+  return message
+
+def check_valid_connection_status(connection_status):
+  if not config.speeds.has_key(connection_status):
+    raise ValueError("invalid connection_status: %s" % (connection_status))
+
+  return True
+
+def sorted_by_speed(items):
+  return sorted(items, key=lambda x: x[1])
+
+def final_message(current_down, current_up):
+  message = get_message('shit') # we're otimist by default
+
+  # sort list based in download speed(so calling satisfy will work as expected)
+  connections_status = sorted_by_speed(config.speeds.items())
+
+  for connection_status, _ in connections_status:
+    if satisfy(current_down, current_up, connection_status):
+      message = get_message(connection_status)
+
+  return message
 
 main()
