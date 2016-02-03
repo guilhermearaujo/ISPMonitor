@@ -1,4 +1,4 @@
-# coding=utf-8
+#encoding: UTF-8
 
 # twitter config
 twitter_consumer_key    = 'abcdefghijklmnopqrstuvwxy'
@@ -11,9 +11,9 @@ twitter_message = 'A @NEToficial está funcionando a %.2f Mbps (%.2f%%) de downl
 # ----
 # fill with your connection data
 
-down_speed = 100.0
-up_speed   = 20.0
-
+# Internet Speeds
+down_speed      = 100.0
+up_speed        = 20.0
 
 messages = dict(
   excellent = ['Mandou bem!'],
@@ -36,3 +36,4 @@ speeds = dict(
   bad       = [60, 60],
   shit      = [10, 10]
 )
+

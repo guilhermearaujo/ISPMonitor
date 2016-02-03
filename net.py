@@ -9,10 +9,12 @@ from IPython import embed # call embed() anywhere to debug code
 
 
 def main():
-  run_test()
-  results = parse_results()
-  post_results_in_twitter(results)
-
+  try:
+    run_test()
+    results = parse_results()
+    post_results_in_twitter(results)
+  except:
+    return
 
 def post_results_in_twitter(results):
   status_message = mount_status(results)
