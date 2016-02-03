@@ -79,7 +79,7 @@ def get_message(connection_status):
 
 def check_valid_connection_status(connection_status):
   if not config.speeds.has_key(connection_status):
-    raise NameError("invalid connection_status: %s" % (connection_status))
+    raise ValueError("invalid connection_status: %s" % (connection_status))
 
   return True
 
