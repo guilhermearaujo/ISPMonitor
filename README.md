@@ -19,10 +19,10 @@ ISP Monitor monitors your Internet speeds and reports the results to your Twitte
 
 # Running
 
-You can set use dinamic download/upload speeds by setting `DOWN_SPEED` and `UP_SPEED` as environment
+You can use dinamic download/upload speeds by setting `ISP_DOWN_SPEED` and `ISP_UP_SPEED` as environment
 variable or setting when calling the script, as:
 
-`ISP_DOWN_SPEED=30 ISP_UP_SPEED=3 python init.py`
+`ISP_DOWN_SPEED=30 ISP_UP_SPEED=3 python net.py`
 
 # Using
 Wait and check your Twitter account periodically.
