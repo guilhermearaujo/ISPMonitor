@@ -21,7 +21,13 @@ def parse_results():
   down_speed = get_value(log.readline())
   up_speed   = get_value(log.readline())
 
-  return [ping, down_speed, down_speed * 100 / config.down_speed, up_speed, up_speed * 100 / config.up_speed]
+  return [
+    ping,
+    down_speed,
+    down_speed * 100 / config.down_speed,
+    up_speed,
+    up_speed * 100 / config.up_speed
+  ]
 
 def get_value(line):
   return float(re.search('(\d+\.\d+)', line).group(0))
@@ -32,8 +38,13 @@ def authenticate():
   return tweepy.API(auth)
 
 def mount_status(results):
-  return 'A @NEToficial está funcionando a %.2f Mbps (%.2f%%) de download e %.2f Mbps (%.2f%%) de upload. A latência é de %.2f ms\n%s' % (
-    results[1], results[2], results[3], results[4], results[0], final_message(results[2], results[4])
+  return config.twitter_message % (
+    results[1],
+    results[2],
+    results[3],
+    results[4],
+    results[0],
+    final_message(results[2], results[4])
   )
 
 def final_message(down, up):
