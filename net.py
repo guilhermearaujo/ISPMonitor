@@ -13,8 +13,9 @@ def main():
     run_test()
     results = parse_results()
     post_results_in_twitter(results)
-  except:
-    return
+  except Exception as e:
+    print "Unexpected error: %s" % str(e)
+    raise
 
 def post_results_in_twitter(results):
   status_message = mount_status(results)
@@ -28,6 +29,8 @@ def post_results_in_twitter(results):
     print "Message: %s" % (status_message)
 
 def run_test():
+  print 'speed config: download = %s | upload = %s' % (config.down_speed, config.up_speed)
+  print 'collecting data using speedtest-cli utility(this can take a while depending on your connection speed)\n'
   os.system('speedtest-cli --simple > net.log')
 
 def parse_results():
@@ -40,9 +43,9 @@ def parse_results():
   return [
     ping,
     down_speed,
-    (down_speed * 100 / config.down_speed),
+    (down_speed * 100 / float(config.down_speed)),
     up_speed,
-    (up_speed * 100 / config.up_speed)
+    (up_speed * 100 / float(config.up_speed))
   ]
 
 def get_value(line):
@@ -63,13 +66,13 @@ def mount_status(results):
     final_message(results[2], results[4]) # random final message
   )
 
-def satisfy(down, up, connection_status):
+def satisfy(current_down, current_up, connection_status):
   check_valid_connection_status(connection_status)
 
   speeds = config.speeds[connection_status]
   up_speed, down_speed = speeds
 
-  return (down > down_speed and up > up_speed)
+  return (current_down > down_speed and current_up > up_speed)
 
 def get_message(connection_status):
   check_valid_connection_status(connection_status)
@@ -85,11 +88,19 @@ def check_valid_connection_status(connection_status):
 
   return True
 
+def sorted_by_speed(items):
+  return sorted(items, key=lambda x: x[1])
+
 def final_message(current_down, current_up):
-  for connection_status in config.speeds.keys():
+  message = get_message('shit') # we're otimist by default
+
+  # sort list based in download speed(so calling satisfy will work as expected)
+  connections_status = sorted_by_speed(config.speeds.items())
+
+  for connection_status, _ in connections_status:
     if satisfy(current_down, current_up, connection_status):
-      return get_message(connection_status)
-    else:
-      return get_message('shit')
+      message = get_message(connection_status)
+
+  return message
 
 main()
