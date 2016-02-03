@@ -53,11 +53,11 @@ def authenticate():
 
 def mount_status(results):
   return config.twitter_message % (
-    results[1], # ping
-    results[2], # download
-    results[3], # download (%)
-    results[4], # upload
-    results[0], # upload (%s)
+    results[1], # download speed
+    results[2], # download (%)
+    results[3], # upload speed
+    results[4], # upload (%s)
+    results[0], # ping
     final_message(results[2], results[4]) # random final message
   )
 
