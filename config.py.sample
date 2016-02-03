@@ -18,7 +18,7 @@ down_speed = os.getenv('ISP_DOWN_SPEED', 30.0)
 up_speed = os.getenv('ISP_UP_SPEED', 3)
 
 # format
-# name = (down %, up %)
+# name = [messages]
 messages = dict(
   awesome   = ['INACREDITÁVEL', 'BUGOU A MATRIX'],
   excellent = ['Mandou bem!', 'Aii meu corassaum'],
