@@ -1,28 +1,39 @@
 #encoding: UTF-8
 
-import os
-import re
+from os import system
+from re import search
+from datetime import datetime
+
 import tweepy
 import config
 
 def main():
   try:
+    write('Running SpeedTest')
     run_test()
+
+    write('Parsing Results')
     results = parse_results()
+
+    write('Authenticating')
     twitter = authenticate()
+
+    write('Posting on Twitter')
     twitter.update_status(mount_status(results))
-  except:
-    return
+  except Exception as e:
+    write(e.message, True)
 
 def run_test():
-  os.system('speedtest-cli --simple > net.log')
+  system('speedtest-cli --simple > results.log')
 
 def parse_results():
-  log        = open('net.log')
+  log        = open('results.log')
 
   ping       = get_value(log.readline())
   down_speed = get_value(log.readline())
   up_speed   = get_value(log.readline())
+
+  log.close()
 
   return [
     ping,
@@ -33,7 +44,7 @@ def parse_results():
   ]
 
 def get_value(line):
-  return float(re.search('(\d+\.\d+)', line).group(0))
+  return float(search('(\d+\.\d+)', line).group(0))
 
 def authenticate():
   auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
@@ -58,5 +69,16 @@ def final_message(down, up):
   elif down > 70 and up > 70: return config.messages['bad']
   elif down > 60 and up > 60: return config.messages['terrible']
   else: return config.messages['shit']
+
+def write(text, log = False):
+  message = '%s - %s' % (timestamp(), text)
+  print(message)
+
+  if log:
+    with open('error.log', 'a') as file:
+      file.write(message)
+
+def timestamp():
+  return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 main()
