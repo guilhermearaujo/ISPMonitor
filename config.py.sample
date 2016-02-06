@@ -4,11 +4,11 @@
 down_speed      = 100.0
 up_speed        = 20.0
 
-# Twitter
-consumer_key    = 'abcdefghijklmnopqrstuvwxy'
-consumer_secret = 'aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890AbCdEfGhIjKlMn'
-access_key      = '1234567890-aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLm'
-access_secret   = 'aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890AbCdEfGhI'
+# Twitter - Get your credentials at http://dev.twitter.com
+consumer_key    = ''
+consumer_secret = ''
+access_key      = ''
+access_secret   = ''
 
 # Tweet
 twitter_message = 'A @NEToficial está funcionando a %.2f Mbps (%.2f%%) de download e %.2f Mbps (%.2f%%) de upload. A latência é de %.2f ms. %s'
