@@ -5,35 +5,57 @@ from re import search
 from datetime import datetime
 
 import tweepy
+import pyping
 import config
 
 def main():
   try:
-    write('Running SpeedTest')
+    uptime = get_uptime()
     run_test()
 
-    write('Parsing Results')
     results = parse_results()
+    post_results(uptime, results)
 
-    write('Authenticating')
-    twitter = authenticate()
-
-    write('Posting on Twitter')
-    twitter.update_status(mount_status(results))
+    write('Finished')
   except Exception as e:
     write(e.message, True)
 
+def get_uptime():
+  if is_online():
+    now = int(datetime.now().strftime('%s'))
+
+    with open('uptime.log', 'a+') as file:
+      file.write('%d\n' % now)
+      file.seek(0)
+      timestamp = file.readline()
+
+    first_online_timestamp = - now if timestamp == '' else int(timestamp)
+
+    uptime = (now - first_online_timestamp) / (60 * 60)
+
+    return '%d %s' % (uptime, 'hora' if uptime == 1 else 'horas')
+  else:
+    with open('uptime.log', 'w') as file:
+      file.write('')
+    raise Exception('There is no Internet connectivity')
+
+def is_online():
+  write('Testing connectivity')
+  for _ in range(10):
+    if pyping.ping('8.8.8.8', timeout = 5000, count = 1, udp = True).ret_code == 0:
+      return True
+  return False
+
 def run_test():
+  write('Running SpeedTest')
   system('speedtest-cli --simple > results.log')
 
 def parse_results():
-  log        = open('results.log')
-
-  ping       = get_value(log.readline())
-  down_speed = get_value(log.readline())
-  up_speed   = get_value(log.readline())
-
-  log.close()
+  write('Parsing Results')
+  with open('results.log') as file:
+    ping       = get_value(file.readline())
+    down_speed = get_value(file.readline())
+    up_speed   = get_value(file.readline())
 
   return [
     ping,
@@ -46,18 +68,25 @@ def parse_results():
 def get_value(line):
   return float(search('(\d+\.\d+)', line).group(0))
 
+def post_results(uptime, results):
+  twitter = authenticate()
+  write('Posting on Twitter')
+  twitter.update_status(mount_status(uptime, results))
+
 def authenticate():
+  write('Authenticating')
   auth = tweepy.OAuthHandler(config.consumer_key, config.consumer_secret)
   auth.set_access_token(config.access_key, config.access_secret)
   return tweepy.API(auth)
 
-def mount_status(results):
+def mount_status(uptime, results):
   return config.twitter_message % (
     results[1], # Download speed
-    results[2], # Download percentage
+    # results[2], # Download percentage
     results[3], # Upload speed
-    results[4], # Upload percentage
+    # results[4], # Upload percentage
     results[0], # Ping
+    uptime,
     final_message(results[2], results[4])
   )
 
@@ -76,7 +105,7 @@ def write(text, log = False):
 
   if log:
     with open('error.log', 'a') as file:
-      file.write(message)
+      file.write('%s\n' % message)
 
 def timestamp():
   return datetime.now().strftime('%Y-%m-%d %H:%M:%S')

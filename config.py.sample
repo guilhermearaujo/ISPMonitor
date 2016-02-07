@@ -11,14 +11,14 @@ access_key      = ''
 access_secret   = ''
 
 # Tweet
-twitter_message = 'A @NEToficial está funcionando a %.2f Mbps (%.2f%%) de download e %.2f Mbps (%.2f%%) de upload. A latência é de %.2f ms. %s'
+twitter_message = 'A @NEToficial está a ⬇ %.2f Mbps e ⬆️ %.2f Mbps. %.2f ms de latência e estou conectado há %s. %s'
 
 messages = dict (
-  awesome   = 'Mandou bem!',
-  great     = 'Tá ótimo :)',
+  awesome   = 'Mandou bem! 🏅🎉',
+  great     = 'Tá ótimo 🙂',
   fair      = 'Tá justo',
-  mediocre  = 'Vamos melhorar isso, pessoal?',
-  bad       = 'Estou pagando por mais, viu?',
-  terrible  = 'Tá de brincadeira?',
-  shit      = 'Pode isso, @Anatel_Informa?'
+  mediocre  = 'Vamos melhorar isso, pessoal? 🙁',
+  bad       = 'Estou pagando por mais, viu? 💸',
+  terrible  = 'Tá de brincadeira? 👎',
+  shit      = '💩 Pode isso, @Anatel_Informa?'
 )
