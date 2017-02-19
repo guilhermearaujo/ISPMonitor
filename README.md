@@ -6,7 +6,6 @@ ISP Monitor monitors your Internet speeds and reports the results to your Twitte
 # Dependencies
 * [speedtest-cli](https://github.com/sivel/speedtest-cli)
 * [tweepy](https://github.com/tweepy/tweepy)
-* [pyping](https://github.com/certator/pyping)
 * Requires a [Twitter Developer account](http://dev.twitter.com)
 
 # Installing

@@ -42,7 +42,7 @@ def get_uptime():
 def is_online():
   write('Testing connectivity')
   for _ in range(10):
-    if pyping.ping('8.8.8.8', timeout = 5000, count = 1, udp = True).ret_code == 0:
+    if system('ping 8.8.8.8 -c 1 -W 5') == 0:
       return True
   return False
 
