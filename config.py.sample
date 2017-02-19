@@ -1,5 +1,7 @@
 #encoding: UTF-8
 
+base_path = '/home/username/.isp_monitor/'
+
 # Internet Speeds
 down_speed      = 100.0
 up_speed        = 20.0

@@ -24,7 +24,7 @@ def get_uptime():
   if is_online():
     now = int(datetime.now().strftime('%s'))
 
-    with open('uptime.log', 'a+') as file:
+    with open(config.base_path + 'uptime.log', 'a+') as file:
       file.write('%d\n' % now)
       file.seek(0)
       timestamp = file.readline()
@@ -35,7 +35,7 @@ def get_uptime():
 
     return '%d %s' % (uptime, 'hora' if uptime == 1 else 'horas')
   else:
-    with open('uptime.log', 'w') as file:
+    with open(config.base_path + 'uptime.log', 'w') as file:
       file.write('')
     raise Exception('There is no Internet connectivity')
 
@@ -48,11 +48,11 @@ def is_online():
 
 def run_test():
   write('Running SpeedTest')
-  system('speedtest-cli --simple > results.log')
+  system('speedtest-cli --simple > ' + config.base_path + 'results.log')
 
 def parse_results():
   write('Parsing Results')
-  with open('results.log') as file:
+  with open(config.base_path + 'results.log') as file:
     ping       = get_value(file.readline())
     down_speed = get_value(file.readline())
     up_speed   = get_value(file.readline())
@@ -104,7 +104,7 @@ def write(text, log = False):
   print(message)
 
   if log:
-    with open('error.log', 'a') as file:
+    with open(config.base_path + 'error.log', 'a') as file:
       file.write('%s\n' % message)
 
 def timestamp():
