@@ -15,8 +15,9 @@ access_secret = ''
 # Tweet
 provider = '@NEToficial'
 # provider = '@vivobr'
-twitter_message = 'A %s está a ⬇ %.2f Mbps e ⬆ %.2f Mbps. %.2f ms ' \
-                  'de latência e estou conectado há %s. Isso é %f \% do contratado. %s'
+twitter_message = 'A {provider} está a ⬇ {down:.2f} Mbps e ⬆ {up:.2f} Mbps. {ping:.2f} ms ' \
+                  'de latência e estou conectado há {uptime}. ' \
+                  'Isso é {ratio:.2f}% do contratado. {reaction}'
 
 messages = dict(
     awesome='Mandou bem! 🏅🎉',

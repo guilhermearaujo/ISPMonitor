@@ -90,14 +90,14 @@ def authenticate():
 def mount_status(uptime, results):
     ping, down, down_ratio, up, up_ratio = results
     worst_ratio = min(down_ratio, up_ratio)
-    return config.twitter_message % (
-        config.provider,
-        down,
-        up,
-        ping,
-        uptime,
-        worst_ratio * 100,
-        get_reaction(down_ratio, up_ratio, ping)
+    return config.twitter_message.format(
+        provider=config.provider,
+        down=down,
+        up=up,
+        ping=ping,
+        ratio=worst_ratio * 100,
+        uptime=uptime,
+        reaction=get_reaction(down_ratio, up_ratio, ping),
     )
 
 
