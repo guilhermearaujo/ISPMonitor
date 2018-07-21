@@ -14,7 +14,7 @@ ISP Monitor monitors your Internet speeds and reports the results to your Twitte
 3. Schedule the script using Cron:  
   `$ crontab -e`  
   Add the line:  
-  `0 * * * * python /path/to/script/net`  
+  `0 * * * * /path/to/script/main.py`  
 **Make sure your Cron's PATH includes the `speedtest-cli` path** ([see how](http://stackoverflow.com/a/2409369/1262783))
 
 # Using
