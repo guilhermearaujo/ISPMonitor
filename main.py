@@ -117,6 +117,7 @@ def get_reaction(down_ratio, up_ratio, ping):
     ]
     max_idx = len(messages) - 1
 
+    # convert the worst_ratio within the range [worst_legal - 1.0] to [0 - number_of_messages]
     worst_ratio = min(down_ratio, up_ratio)
 
     worst_legal = min(config.anatel['down_ratio'], config.anatel['up_ratio'])
