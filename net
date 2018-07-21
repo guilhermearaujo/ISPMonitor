@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import math
 from datetime import datetime
 from os import system
 from re import search
@@ -18,7 +18,7 @@ def main():
 
         write('Finished')
     except Exception as e:
-        write(e.message, True)
+        write(str(e), True)
 
 
 def get_uptime():
@@ -61,13 +61,13 @@ def parse_results():
         down_speed = get_value(file.readline())
         up_speed = get_value(file.readline())
 
-    return [
+    return (
         ping,
         down_speed,
-        down_speed * 100 / config.down_speed,
+        down_speed / config.down_speed,
         up_speed,
-        up_speed * 100 / config.up_speed
-    ]
+        up_speed / config.up_speed
+    )
 
 
 def get_value(line):
@@ -88,32 +88,46 @@ def authenticate():
 
 
 def mount_status(uptime, results):
+    ping, down, down_ratio, up, up_ratio = results
+    worst_ratio = min(down_ratio, up_ratio)
     return config.twitter_message % (
-        results[1],  # Download speed
-        # results[2], # Download percentage
-        results[3],  # Upload speed
-        # results[4], # Upload percentage
-        results[0],  # Ping
+        config.provider,
+        down,
+        up,
+        ping,
         uptime,
-        final_message(results[2], results[4])
+        worst_ratio * 100,
+        get_reaction(down_ratio, up_ratio, ping)
     )
 
 
-def final_message(down, up):
-    if down > 105 or up > 110:
-        return config.messages['awesome']
-    elif down > 95 and up > 95:
-        return config.messages['great']
-    elif down > 90 and up > 90:
-        return config.messages['fair']
-    elif down > 85 and up > 85:
-        return config.messages['mediocre']
-    elif down > 70 and up > 70:
-        return config.messages['bad']
-    elif down > 60 and up > 60:
-        return config.messages['terrible']
-    else:
-        return config.messages['shit']
+def get_reaction(down_ratio, up_ratio, ping):
+    if ping > config.anatel['ping'] \
+            or down_ratio <= config.anatel['down_ratio'] \
+            or up_ratio <= config.anatel['up_ratio']:
+        return config.messages['illegal']
+
+    messages = [
+        config.messages['terrible'],
+        config.messages['bad'],
+        config.messages['mediocre'],
+        config.messages['fair'],
+        config.messages['great'],
+        config.messages['awesome'],
+    ]
+    max_idx = len(messages) - 1
+
+    worst_ratio = min(down_ratio, up_ratio)
+
+    worst_legal = min(config.anatel['down_ratio'], config.anatel['up_ratio'])
+    best_legal = 1.0
+
+    coefficient = (0 - max_idx) / (worst_legal - best_legal)
+    idx = coefficient * (worst_ratio - worst_legal)
+
+    message_idx = min(int(math.ceil(idx)), max_idx)
+
+    return messages[message_idx]
 
 
 def write(text, log=False):
