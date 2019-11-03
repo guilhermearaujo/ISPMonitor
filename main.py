@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import math, random
+import json, math, random
 from datetime import datetime
 from os import system
 from re import search
@@ -58,27 +58,22 @@ def is_online():
 
 def run_test():
     write('Running SpeedTest')
-    system('speedtest-cli --simple > ' + config.base_path + 'results.log')
+    system('speedtest --accept-license -f json > ' + config.base_path + 'results.log')
 
 
 def parse_results():
     write('Parsing Results')
     with open(config.base_path + 'results.log') as file:
-        ping = get_value(file.readline())
-        down_speed = get_value(file.readline())
-        up_speed = get_value(file.readline())
+        data = json.loads(file.read())
 
     return (
-        ping,
-        down_speed,
-        down_speed / config.down_speed,
-        up_speed,
-        up_speed / config.up_speed
+        data['ping']['latency'],
+        data['download']['bandwidth'] * 8e-6,
+        data['download']['bandwidth'] * 8e-6 / config.down_speed,
+        data['upload']['bandwidth'] * 8e-6,
+        data['upload']['bandwidth'] * 8e-6 / config.up_speed,
+        data['result']['url']
     )
-
-
-def get_value(line):
-    return float(search('(\d+\.\d+)', line).group(0))
 
 
 def post_results(uptime, results):
@@ -95,7 +90,7 @@ def authenticate():
 
 
 def mount_status(uptime, results):
-    ping, down, down_ratio, up, up_ratio = results
+    ping, down, down_ratio, up, up_ratio, url = results
     worst_ratio = min(down_ratio, up_ratio)
     return config.twitter_message.format(
         provider=config.provider,
@@ -105,6 +100,7 @@ def mount_status(uptime, results):
         ratio=worst_ratio * 100,
         uptime=uptime,
         reaction=get_reaction(down_ratio, up_ratio, ping),
+        url=url,
     )
 
 
