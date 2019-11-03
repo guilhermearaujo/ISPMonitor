@@ -13,7 +13,7 @@ access_key = ''
 access_secret = ''
 
 # Tweet
-provider = '@NEToficial'
+provider = '@ClaroBrasil'
 # provider = '@vivobr'
 twitter_message = 'A {provider} está a ⬇ {down:.2f} Mbps e ⬆ {up:.2f} Mbps. {ping:.2f} ms ' \
                   'de latência e estou conectado há {uptime}. ' \
