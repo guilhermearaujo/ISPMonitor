@@ -1,5 +1,5 @@
 # ISP Monitor
-_As seen on http://www.twitter.com/anethoje_
+_As seen on http://www.twitter.com/avivohoje_ (formely @anethoje)
 
 ISP Monitor monitors your Internet speeds and reports the results to your Twitter account.
 
@@ -10,12 +10,13 @@ ISP Monitor monitors your Internet speeds and reports the results to your Twitte
 
 # Installing
 1. Clone this repo: `$ git clone git@github.com:guilhermearaujo/ISPMonitor.git`
-2. Add your Twitter Credentials and Internet speeds to `config.py` (hint: there's a `config.py.sample`!)
-3. Schedule the script using Cron:  
+2. Run `make dependencies` to install the dependencies. The official Ookla Speedtest CLI tool is also required. See how to [install it on your platform](https://www.speedtest.net/apps/cli).
+3. Add your Twitter Credentials and Internet speeds to `config.py` (hint: there's a `config.py.sample`!)
+4. Schedule the script using Cron:  
   `$ crontab -e`  
   Add the line:  
   `0 * * * * /path/to/script/main.py`  
-**Make sure your Cron's PATH includes the `speedtest-cli` path** ([see how](http://stackoverflow.com/a/2409369/1262783))
+**Make sure your Cron's PATH includes the `speedtest` path** ([see how](http://stackoverflow.com/a/2409369/1262783))
 
 # Using
 Wait and check your Twitter account periodically.
