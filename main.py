@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import math
+import math, random
 from datetime import datetime
 from os import system
 from re import search
@@ -7,6 +7,12 @@ from re import search
 import config
 import tweepy
 
+PING_SERVERS = [
+    '1.1.1.1',
+    '1.0.0.1',
+    '8.8.8.8',
+    '8.8.4.4',
+]
 
 def main():
     try:
@@ -44,7 +50,8 @@ def get_uptime():
 def is_online():
     write('Testing connectivity')
     for _ in range(10):
-        if system('ping 8.8.8.8 -c 1 -W 5') == 0:
+        ip = random.choice(PING_SERVERS)
+        if system(f'ping {ip} -c 1 -W 5') == 0:
             return True
     return False
 
