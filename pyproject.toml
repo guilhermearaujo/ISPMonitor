@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ispmonitor"
+version = "0.1.0"
+description = ""
+authors = ["Guilherme Araújo <guilhermeama@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+tweepy = "*"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

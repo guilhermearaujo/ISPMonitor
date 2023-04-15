@@ -1,4 +1,4 @@
-dependencies:
+install:
 ifeq (, $(shell command -v speedtest))
 	@echo "IMPORTANT!\n"
 	@echo "Speedtest CLI tool must be installed."
@@ -6,17 +6,18 @@ ifeq (, $(shell command -v speedtest))
 else
 	@echo "Speedtest CLI tool is installed"
 endif
-	@pip install -U pip
-	@pip install pipenv --upgrade
-	@pipenv install --dev --skip-lock
+	@poetry install
 
 update:
-	@pipenv clean
-	@pipenv lock --clear
-	@pipenv sync
+	@poetry update
 
-check:
-	@pipenv check
+lint:
+	@poetry run black .
 
+lint-check:
+	@poetry run black . --check
 
-.PHONY: dependencies update check
+run:
+	@poetry run python main.py
+
+.PHONY: install update lint lint-check run
